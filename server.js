@@ -124,7 +124,7 @@ io.on('connection', (socket) => {
 
     // When a user is typing
     socket.on('typing', (data) => {
-        socket.to(data.room).emit('user_typing', `${data.username} is typing...`);
+        socket.to(data.room).broadcast.emit('user_typing', { username: data.username });
     });
 
     // Other socket event handlers...

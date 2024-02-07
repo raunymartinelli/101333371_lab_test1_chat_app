@@ -41,8 +41,36 @@
     $('#chatWindow').append(`<p><strong>${data.from_user}</strong>: ${data.message}</p>`);
 });
 }
+        // Show typing indicator when typing
+        $('#messageInput').on('input', function() {
+            if (this.value.length > 0) {
+                socket.emit('typing', { username: username, room: room });
+            }
+        });
 
-    // Send message
+// Display "user is typing..." message
+        socket.on('user_typing', function(data) {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (!typingIndicator) {
+                const typingMessage = document.createElement('div');
+                typingMessage.id = 'typingIndicator';
+                typingMessage.className = 'typing-indicator';
+                typingMessage.innerText = `${data.username} is typing...`;
+                document.getElementById('chatWindow').appendChild(typingMessage);
+            } else {
+                typingIndicator.innerText = `${data.username} is typing...`;
+            }
+
+            // Remove indicator after some time
+            setTimeout(() => {
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+            }, 3000);
+        });
+
+
+        // Send message
     $('#messageForm').submit(function(e) {
     e.preventDefault();
     const message = $('#messageInput').val();
