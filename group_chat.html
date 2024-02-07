@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Selection - Chat App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center">Chat app</h1>
+    <div class="card">
+        <div class="card-body">
+            <form id="roomSelectionForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" id="username" placeholder="Enter username">
+                </div>
+                <div class="form-group">
+                    <label for="room">Room</label>
+                    <select class="form-control" id="room">
+                        <option>DevOps</option>
+                        <option>Cloud Computing</option>
+                        <option>COVID-19</option>
+                        <option>Sports</option>
+                        <option>Node.js</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Join Chat Room</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#roomSelectionForm').on('submit', function(e) {
+            e.preventDefault();
+            const username = $('#username').val();
+            const room = $('#room').val();
+            sessionStorage.setItem('username', username);
+            sessionStorage.setItem('room', room);
+            window.location.href = 'chat-room.html'; // Redirect to chat room page
+        });
+    });
+</script>
+</body>
+</html>

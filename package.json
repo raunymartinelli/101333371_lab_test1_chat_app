@@ -1,0 +1,19 @@
+{
+  "name": "101333371_lab_test1_chat_app",
+  "version": "1.0.0",
+  "description": "Chat application for COMP3133 Lab Test 1",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Rauny Martinelli",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^4.18.2",
+    "express-session": "^1.18.0",
+    "mongoose": "^8.1.1",
+    "socket.io": "^4.7.4"
+  }
+}

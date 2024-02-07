@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App - Sign Up</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background-color: #f7f7f7;
+        }
+        .form-container {
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            width: 100%;
+            max-width: 400px; /* Adjust the width as needed */
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between; /* This will space the buttons nicely */
+        }
+        .button-group button,
+        .button-group a {
+            flex-grow: 1; /* This will make the buttons take up equal space */
+            margin: 5px; /* Adds space around buttons */
+        }
+        #signupMessage {
+            margin-bottom: 10px; /* Spacing between message and buttons */
+        }
+        a.btn.btn-success.mt-3{
+            margin: 5px;
+            padding: 6px 12px;
+
+        }
+    </style>
+
+</head>
+<body>
+<div class="form-container">
+    <h2>Sign Up</h2>
+    <form id="signupForm">
+        <div class="form-group">
+            <label for="signupFirstName">First Name:</label>
+            <input type="text" id="signupFirstName" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="signupLastName">Last Name:</label>
+            <input type="text" id="signupLastName" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="signupAge">Age:</label>
+            <input type="number" id="signupAge" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="signupEmail">Email:</label>
+            <input type="email" id="signupEmail" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="signupPassword">Password:</label>
+            <input type="password" id="signupPassword" class="form-control" required>
+        </div>
+        <div id="signupMessage" class="text-success"></div>
+        <div class="button-group">
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+        </div>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#signupForm').on('submit', function(e){
+            e.preventDefault();
+            const firstName = $('#signupFirstName').val();
+            const lastName = $('#signupLastName').val();
+            const age = $('#signupAge').val();
+            const email = $('#signupEmail').val();
+            const password = $('#signupPassword').val();
+
+            // Validate input fields
+            if (!firstName || !lastName || !age || !email || !password) {
+                $('#signupMessage').text('Please fill in all fields.');
+                return;
+            }
+
+            // Implement AJAX call for signup
+            $.ajax({
+                url: '/signup',
+                method: 'POST',
+                data: {
+                    firstName: firstName,
+                    lastName: lastName,
+                    age: age,
+                    email: email,
+                    password: password
+                },
+                success: function(response) {
+                    const username = response.username; // Use the username returned from the server response
+                    $('#signupMessage').removeClass('text-danger').addClass('text-success').text(`Your registration was successful. Your username is: ${username}`);
+                    // Append the login button after successful registration
+                    $('.button-group').append('<a href="login.html" class="btn btn-success mt-3">Login</a>');
+                },
+                error: function(xhr, status, error) {
+                    $('#signupMessage').text(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

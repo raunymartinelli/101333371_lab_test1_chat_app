@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room - Chat App</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center" id="roomTitle">Chat app</h1>
+    <div id="chatWindow" class="card card-body mb-3">
+        <!-- Messages will be displayed here -->
+    </div>
+    <form id="messageForm" class="form-inline">
+        <input type="text" id="messageInput" class="form-control mb-2 mr-sm-2 flex-grow-1" placeholder="Type your message...">
+            <button type="submit" class="btn btn-primary mb-2">Send</button>
+    </form>
+    <button id="leaveRoom" class="btn btn-danger">Leave Room</button>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+    const username = sessionStorage.getItem('username');
+    const room = sessionStorage.getItem('room');
+
+    $(document).ready(function() {
+    if (!username || !room) {
+    alert('Please select a room first.');
+    window.location.href = 'group_chat.html'; // Redirect back to room selection if no room has been selected
+} else {
+    $('#roomTitle').text(`Room name: ${room}`);
+    socket.emit('join_room', { username, room });
+
+    // Append messages to chat window
+    socket.on('receive_message', function(data) {
+    $('#chatWindow').append(`<p><strong>${data.from_user}</strong>: ${data.message}</p>`);
+});
+}
+
+    // Send message
+    $('#messageForm').submit(function(e) {
+    e.preventDefault();
+    const message = $('#messageInput').val();
+    socket.emit('send_message', { room, message, from_user: username });
+    $('#messageInput').val('');
+});
+
+    // Leave room
+    $('#leaveRoom').click(function() {
+    socket.emit('leave_room', { username, room });
+    window.location.href = 'group_chat.html'; // Redirect to room selection
+});
+});
+</script>
+</body>
+</html>
